@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Beardon Bathroom Occupancy</title>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            width: 100%;
+            text-align: center;
+            font-family: sans-serif;
+        }
+        .bathroom_status {
+            display: inline-block;
+        }
+        .bathroom_status i {
+            font-size: 200px;
+        }
+        .bathroom_status.occupied i,
+        .bathroom_status.occupied h1 {
+            color: red;
+        }
+        .bathroom_status.vacant i,
+        .bathroom_status.vacant h1 {
+            color: green;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
+    <script type="application/javascript" language="javascript">
+        angular.module('app', []);
+
+        angular.module('app').controller('bathroom', ['$scope', '$http', function($scope, $http) {
+            function checkBathroom() {
+                return $http.post('https://api.spark.io/v1/devices/48ff6c065067555041502387/checkRestrm?access_token=541af167b081f6539aee55d6d0b63f25a5d0953b')
+                    .then(function(res, status) {
+                        return !Boolean(res.data.return_value);
+                    }).then(function(occupied) {
+                        $scope.occupied = occupied;
+                    }).catch(function(err) {
+                        $scope.occupied = undefined;
+                    });
+            }
+
+            checkBathroom();
+
+            setInterval(checkBathroom, 10000);
+        }]);
+    </script>
+</head>
+<body ng-app="app" ng-controller="bathroom">
+    <div>
+        <div class="bathroom_status" ng-class="{ occupied: (occupied === true), vacant: (occupied === false) }">
+            <div ng-if="occupied === true">
+                <h1>Occupied</h1>
+                <i class="fa fa-minus-circle"></i>
+                <p>The bathroom is currently occupied.</p>
+            </div>
+            <div ng-if="occupied === false">
+                <h1>Vacant</h1>
+                <i class="fa fa-circle-o"></i>
+                <p>The bathroom is currently vacant.</p>
+            </div>
+            <div ng-if="occupied === undefined">
+                <h1>Unknown</h1>
+                <i class="fa fa-question"></i>
+                <p>Something went wrong getting the data or something.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
