@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app" ng-controller="bathroom">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Beardon Bathroom Occupancy</title>
+    <title>{{ occupied ? "OCCUPIED" : "VACANT" }} Beardon Bathroom Occupancy</title>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -47,7 +47,7 @@
         }]);
     </script>
 </head>
-<body ng-app="app" ng-controller="bathroom">
+<body>
     <div>
         <div class="bathroom_status" ng-class="{ occupied: (occupied === true), vacant: (occupied === false) }">
             <div ng-if="occupied === true">
