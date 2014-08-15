@@ -31,7 +31,7 @@
 
         angular.module('app').controller('bathroom', ['$scope', '$http', function($scope, $http) {
             function checkBathroom() {
-                return $http.post('https://api.spark.io/v1/devices/48ff6c065067555041502387/checkRestrm?access_token=541af167b081f6539aee55d6d0b63f25a5d0953b')
+                return $http.post('https://api.spark.io/v1/devices/DEVICE_ID/checkRestrm?access_token=ACCESS_TOKEN')
                     .then(function(res, status) {
                         return !Boolean(res.data.return_value);
                     }).then(function(occupied) {
