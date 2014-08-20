@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html ng-app="app" ng-controller="bathroom">
+<html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>{{ occupied ? "OCCUPIED" : "VACANT" }} Beardon Bathroom Occupancy</title>
+    <title>Beardon Bathroom Occupancy</title>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -30,12 +30,39 @@
         angular.module('app', []);
 
         angular.module('app').controller('bathroom', ['$scope', '$http', function($scope, $http) {
+
+            /* Probably doesn't work in IE. */
+            function setFavicon(occupied) {
+              // Create the new element, find the old one if present.
+              var link = document.createElement('link'),
+                  oldLink = document.getElementById('rose-favicon');
+
+              // I'm So Meta Even This Acronym
+              link.id = 'rose-favicon';
+              link.type = 'image/png';
+              link.rel = 'shortcut icon';
+
+              // Set the appropriate favicon.
+              if(occupied) {
+                link.href = './rose_occupied.png';
+              } else link.href = './rose_vacant.png';
+
+              // Drop the old one.
+              if(oldLink) {
+                document.getElementsByTagName('head')[0].removeChild(oldLink);
+              }
+
+              // Yay!
+              document.getElementsByTagName('head')[0].appendChild(link);
+            }
+
             function checkBathroom() {
                 return $http.post('https://api.spark.io/v1/devices/DEVICE_ID/checkRestrm?access_token=ACCESS_TOKEN')
                     .then(function(res, status) {
                         return !Boolean(res.data.return_value);
                     }).then(function(occupied) {
                         $scope.occupied = occupied;
+                        setFavicon(occupied);
                     }).catch(function(err) {
                         $scope.occupied = undefined;
                     });
@@ -47,7 +74,7 @@
         }]);
     </script>
 </head>
-<body>
+<body ng-app="app" ng-controller="bathroom">
     <div>
         <div class="bathroom_status" ng-class="{ occupied: (occupied === true), vacant: (occupied === false) }">
             <div ng-if="occupied === true">
