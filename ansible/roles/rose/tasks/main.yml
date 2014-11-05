@@ -1,0 +1,11 @@
+---
+- name: ensure destination directory exists
+  file: path={{ prefix }} owner={{ ansible_user }} group=www state=directory
+  sudo: yes
+
+- name: check out ROSE source
+  git: repo=git@github.com:beardon/ROSE.git dest={{ prefix }} version={{ rose_version }} accept_hostkey=true
+
+- name: set ROSE source ownership
+  file: path={{ prefix }} group=www recurse=yes
+  sudo: yes

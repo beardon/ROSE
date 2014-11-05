@@ -1,0 +1,6 @@
+---
+- name: copy Nginx config file
+  template: src=vhost.conf dest=/etc/nginx/vhosts.d/{{ nginx_server_name }}.conf
+  notify:
+    - restart Nginx
+  remote_user: root
