@@ -1,0 +1,41 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>Beardon's Home Page! A demented SQL lives here!</title>
+</head>
+<body background="iesupport/marble.gif" bgcolor="000000" link="CC33FF" text="FFFFFF" vlink="CC33FF">
+  <center>
+  <center>
+<img src="iesupport/const1.gif">
+<img src="iesupport/const2.gif">
+<img src="iesupport/const3.gif">
+<img src="iesupport/const4.gif">
+<br><h1 id="underconst">THIS PAGE IS UNDER CONSTRUCTION</h1>
+</center
+    <h1>GUESTBOOK</h1>
+
+    <embed src="iesupport/numa.mp3" autostart="true" loop="true" controller="false" height="0" width="0">
+    Name: <input type="text" name="author" id="author">
+    <br>
+    Comment: <input type="text" name="comment" id="comment" style="height:100px;">
+    <marquee><input id="blink" style="visibility:visible" type="submit" value="Submit!" onclick="submit()"></marquee>
+    <br>
+    <h1 id="error" style="visibility: hidden; color:red;">We're sorry, an error has occurred!</h1>
+  </center>
+<script type="text/javascript">
+var submit = function() {
+  document.getElementById('author').value = '';
+  document.getElementById('comment').value = '';
+  document.getElementById('error').style.visibility = 'visible';
+};
+
+setInterval(function() {
+    var colors = ['red', 'green', 'black', 'white', 'blue', 'pink', 'purple', 'yellow', 'orange'];
+    var blinkstyle = document.getElementById('blink').style;
+    blinkstyle.visibility = (blinkstyle.visibility === 'visible') ? 'hidden' : 'visible';
+
+    var headerstyle = document.getElementById('underconst').style;
+    headerstyle.color = colors[Math.floor(Math.random() * colors.length)];
+  }, 500);
+</script>
+</body>
+</html>

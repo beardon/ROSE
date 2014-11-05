@@ -26,7 +26,9 @@
     </style>
     <meta name="viewport" content="width=device-width, user-scalable=no">
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
-    <script type="application/javascript" language="javascript">
+    <script src="http://www.cornify.com/js/cornify.js"></script>
+    <script src="./detectmobilebrowser.js"></script>
+    <script type="application/javascript">
         angular.module('app', []);
 
         angular.module('app').controller('bathroom', ['$scope', '$http', function($scope, $http) {
@@ -57,7 +59,7 @@
             }
 
             function checkBathroom() {
-                return $http.post('https://api.spark.io/v1/devices/DEVICE_ID/checkRestrm?access_token=ACCESS_TOKEN')
+                return $http.post('https://api.spark.io/v1/devices/48ff6c065067555041502387/checkRestrm?access_token=541af167b081f6539aee55d6d0b63f25a5d0953b')
                     .then(function(res, status) {
                         return !Boolean(res.data.return_value);
                     }).then(function(occupied) {
@@ -72,6 +74,21 @@
 
             setInterval(checkBathroom, 10000);
         }]);
+
+        /* Detect IE */
+        function isIE() { 
+          return ((navigator.appName == 'Microsoft Internet Explorer')
+            || ((navigator.appName == 'Netscape')
+            && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})")
+            .exec(navigator.userAgent) != null)));
+        };
+
+        /* Redirect to IE version as appropriate. */
+        if (!window.globalVariableThatDeterminesWhetherOrNotToRedirectIEUsersSuchThatIfItIsTrueTheyShouldNotBeRedirected
+            && isIE()) {
+          window.location = './iesupport.html';
+        }
+
     </script>
 </head>
 <body ng-app="app" ng-controller="bathroom">
@@ -79,7 +96,7 @@
         <div class="bathroom_status" ng-class="{ occupied: (occupied === true), vacant: (occupied === false) }">
             <div ng-if="occupied === true">
                 <h1>Occupied</h1>
-                <i class="fa fa-minus-circle"></i>
+                <i class="fa fa-minus-circle" onclick="cornify_add(); document.getElementById('cornifycount').style.visibility='hidden'; return false;"></i>
                 <p>The bathroom is currently occupied.</p>
             </div>
             <div ng-if="occupied === false">
