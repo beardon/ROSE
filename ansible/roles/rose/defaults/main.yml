@@ -1,2 +1,5 @@
 ---
 rose_version: HEAD
+spark_api_host: api.spark.io
+spark_api_protocol: https
+spark_api_version: v1

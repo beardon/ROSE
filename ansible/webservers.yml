@@ -1,0 +1,7 @@
+---
+- hosts: server
+  roles:
+    - rose
+    - nginx-config
+    - slack
+  remote_user: "{{ ansible_user }}"

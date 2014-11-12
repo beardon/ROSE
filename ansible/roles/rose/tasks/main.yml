@@ -6,6 +6,9 @@
 - name: check out ROSE source
   git: repo=git@github.com:beardon/ROSE.git dest={{ prefix }} version={{ rose_version }} accept_hostkey=true
 
+- name: construct ROSE index.html
+  template: src=index.html dest={{ prefix }}
+
 - name: set ROSE source ownership
   file: path={{ prefix }} group=www recurse=yes
   sudo: yes

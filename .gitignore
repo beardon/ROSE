@@ -1,1 +1,7 @@
-.idea/*
+# Intellij
+.idea
+*.iml
+
+# Ansible
+*.key
+*-unencrypted.yml
