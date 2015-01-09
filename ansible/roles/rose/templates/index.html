@@ -39,7 +39,7 @@
               var link = document.createElement('link'),
                   oldLink = document.getElementById('rose-favicon');
 
-              // I'm So Meta Even This Acronym
+              // Meta
               link.id = 'rose-favicon';
               link.type = 'image/png';
               link.rel = 'shortcut icon';
@@ -59,9 +59,9 @@
             }
 
             function checkBathroom() {
-                return $http.post('{{ spark_api_protocol }}://{{ spark_api_host }}/{{ spark_api_version }}/devices/{{ spark_device_id }}/checkRestrm?access_token={{ spark_access_token }}')
+                return $http.post('{{ spark_api_protocol }}://{{ spark_api_host }}/{{ spark_api_version }}/devices/{{ spark_device_id }}/checkRestrm?access_token={{ spark_access_token }}', {args: "port_a"} )
                     .then(function(res, status) {
-                        return !Boolean(res.data.return_value);
+                        return res.data.return_value > 3500;
                     }).then(function(occupied) {
                         $scope.occupied = occupied;
                         setFavicon(occupied);
