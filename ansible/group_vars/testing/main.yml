@@ -3,6 +3,6 @@ ansible_user: rose
 check_interval: 10000
 domain: test.roomping.com
 nginx_http_port: 8888
-nginx_ip: 74.86.147.157
+nginx_ip: 10.8.16.205
 prefix: /opt/rose_test
 rose_version: master
