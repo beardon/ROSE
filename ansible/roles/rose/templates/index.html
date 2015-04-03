@@ -61,7 +61,7 @@
             function checkBathroom() {
                 return $http.post('{{ spark_api_protocol }}://{{ spark_api_host }}/{{ spark_api_version }}/devices/{{ spark_device_id }}/readPort?access_token={{ spark_access_token }}', {args: "port_a"} )
                     .then(function(res, status) {
-                        return res.data.return_value > 120;
+                        return res.data.return_value !== undefined ? res.data.return_value > 100: undefined;
                     }).then(function(occupied) {
                         $scope.occupied = occupied;
                         setFavicon(occupied);
