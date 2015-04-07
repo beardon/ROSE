@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Beardon Bathroom Occupancy</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            text-align: center;
+            font-family: sans-serif;
+        }
+        .bathroom_status {
+            display: inline-block;
+        }
+        .bathroom_status i {
+            font-size: 200px;
+        }
+        .bathroom_status.occupied i,
+        .bathroom_status.occupied h1 {
+            color: red;
+        }
+        .bathroom_status.vacant i,
+        .bathroom_status.vacant h1 {
+            color: green;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
+    <script src="http://www.cornify.com/js/cornify.js"></script>
+    <script src="./detectmobilebrowser.js"></script>
+    <script src="./primus.js"></script>
+    <script type="application/javascript">
+        var socket = new Primus('http://localhost:3420');
+
+        angular.module('app', []);
+        angular.module('app').controller('bathroom', ['$scope', '$http', function($scope, $http) {
+             socket.on('rose', function (val) {
+                $scope.$evalAsync(function () {
+                    console.log(val);
+                    $scope.occupied = val > 50;
+                    setFavicon($scope.occupied);
+                });
+            });
+
+
+            /* Probably doesn't work in IE. */
+            function setFavicon(occupied) {
+              // Create the new element, find the old one if present.
+              var link = document.createElement('link'),
+                  oldLink = document.getElementById('rose-favicon');
+              // Meta
+              link.id = 'rose-favicon';
+              link.type = 'image/png';
+              link.rel = 'shortcut icon';
+              // Set the appropriate favicon.
+              if(occupied) {
+                link.href = './rose_occupied.png';
+              } else link.href = './rose_vacant.png';
+              // Drop the old one.
+              if(oldLink) {
+                document.getElementsByTagName('head')[0].removeChild(oldLink);
+              }
+              // Yay!
+              document.getElementsByTagName('head')[0].appendChild(link);
+            }
+        }]);
+        /* Detect IE */
+        function isIE() { 
+          return ((navigator.appName == 'Microsoft Internet Explorer')
+            || ((navigator.appName == 'Netscape')
+            && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})")
+            .exec(navigator.userAgent) != null)));
+        };
+        /* Redirect to IE version as appropriate. */
+        if (!window.globalVariableThatDeterminesWhetherOrNotToRedirectIEUsersSuchThatIfItIsTrueTheyShouldNotBeRedirected
+            && isIE()) {
+          window.location = './iesupport.html';
+        }
+    </script>
+</head>
+<body ng-app="app" ng-controller="bathroom">
+    <div>
+        <div class="bathroom_status" ng-class="{ occupied: (occupied === true), vacant: (occupied === false) }">
+            <div ng-if="occupied === true">
+                <h1>Occupied</h1>
+                <i class="fa fa-minus-circle" onclick="cornify_add(); document.getElementById('cornifycount').style.visibility='hidden'; return false;"></i>
+                <p>The bathroom is currently occupied.</p>
+            </div>
+            <div ng-if="occupied === false">
+                <h1>Vacant</h1>
+                <i class="fa fa-circle-o"></i>
+                <p>The bathroom is currently vacant.</p>
+            </div>
+            <div ng-if="occupied === undefined">
+                <h1>Unknown</h1>
+                <i class="fa fa-question"></i>
+                <p>Something went wrong getting the data or something.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
